@@ -21,8 +21,22 @@ public class Caesar : CryptBase
 	}
 
 	private protected override Func<char, int> DecryptFunc =>
-		(c) => (Alphabet.Length + Alphabet.IndexOf(c) + Key) % Alphabet.Length;
+		(c) => (Alphabet.Length + Alphabet.IndexOf(c) - Key) % Alphabet.Length;
 		
 	private protected override Func<char, int> EncryptFunc =>
-		(c) => (Alphabet.IndexOf(c) - Key + Alphabet.Length) % Alphabet.Length;
+		(c) => (Alphabet.IndexOf(c) + Key + Alphabet.Length) % Alphabet.Length;
+
+	public static string BruteForce(string alphabet, string ciphertext)
+	{
+		var caesar = new Caesar(0);
+		var analisys = new Cryptanalisys(caesar);
+
+		for (var i = 1; i < alphabet.Length; i++)
+		{
+			caesar.Key = i;
+			analisys.CheckPotential(ciphertext);
+		}
+
+		return analisys.Plaintext;
+	}
 }

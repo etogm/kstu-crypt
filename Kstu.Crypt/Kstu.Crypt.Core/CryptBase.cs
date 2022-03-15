@@ -38,7 +38,7 @@ public abstract class CryptBase
 		return ciphertext.ToString();
 	}
 	
-	private string GetAlphabet()
+	internal static string GetAlphabet()
 	{
 		var alphabet = new StringBuilder();
 

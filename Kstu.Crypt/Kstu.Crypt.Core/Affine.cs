@@ -63,6 +63,28 @@ public class Affine : CryptBase
 	private protected override Func<char, int> DecryptFunc =>
 		(c) => (_inv * (Alphabet.IndexOf(c) + Alphabet.Length - B)) % Alphabet.Length;
 
+	public static string BruteForce(string alphabet, string ciphertext)
+	{
+		var affine = new Affine(1, 1);
+		var analisys = new Cryptanalisys(affine);
+
+		for (var i = 1; i < alphabet.Length; i++)
+		{
+			if (affine.Gcd(i % alphabet.Length, alphabet.Length) != 1)
+				continue;
+			
+			affine.A = i;
+
+			for (var j = 1; j < alphabet.Length; j++)
+			{
+				affine.B = j;
+
+				analisys.CheckPotential(ciphertext);
+			}
+		}
+
+		return analisys.Plaintext;
+	}
 	private int Inverse(int a, int n)
 	{
 		for (int i = 0; i < n; i++)
